@@ -21,7 +21,6 @@ resource_local_to_scene = true
 render_priority = -1
 shader = ExtResource("6_8gf4f")
 shader_parameter/screen_texture = SubResource("ViewportTexture_40w3p")
-shader_parameter/edge_threshold = 0.2
 
 [sub_resource type="Environment" id="Environment_a23fp"]
 background_energy_multiplier = 0.0

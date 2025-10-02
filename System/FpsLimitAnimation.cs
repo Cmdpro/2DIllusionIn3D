@@ -8,7 +8,7 @@ namespace IllusionSystem
     {
         AnimationPlayer player;
         [Export]
-        public int fps;
+        public int fps = 10;
         public override void _Ready()
         {
             base._Ready();
@@ -19,6 +19,13 @@ namespace IllusionSystem
         public override void _Process(double delta)
         {
             base._Process(delta);
+
+            if (player == null)
+            {
+                player = (AnimationPlayer)GetParent();
+                if (player != null) player.CallbackModeProcess = AnimationMixer.AnimationCallbackModeProcess.Manual;
+                return;
+            }
 
             double spf = 1d / fps;
 

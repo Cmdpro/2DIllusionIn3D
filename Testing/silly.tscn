@@ -1,0 +1,38 @@
+[gd_scene load_steps=7 format=3 uid="uid://ctpfmekyuew80"]
+
+[ext_resource type="PackedScene" uid="uid://c45t4dgplgnb8" path="res://Testing/silly.glb" id="1_oskgh"]
+[ext_resource type="Shader" uid="uid://4fsqo5wb1srg" path="res://System/main.gdshader" id="2_nouv3"]
+[ext_resource type="Script" uid="uid://h3s0gpfswn1d" path="res://System/FpsLimitAnimation.cs" id="2_tqfpw"]
+[ext_resource type="Texture2D" uid="uid://difns1mmx6yqs" path="res://Testing/silly_Silly.png" id="3_tqfpw"]
+[ext_resource type="Script" uid="uid://8o7h06tgrftp" path="res://Testing/AutoPlay.cs" id="4_cckgi"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nouv3"]
+render_priority = 0
+shader = ExtResource("2_nouv3")
+shader_parameter/mainColor = Color(1, 1, 1, 1)
+shader_parameter/image = ExtResource("3_tqfpw")
+shader_parameter/specular = false
+shader_parameter/shade = true
+
+[node name="silly" instance=ExtResource("1_oskgh")]
+
+[node name="Skeleton3D" parent="Armature" index="0"]
+bones/0/position = Vector3(0, 1.27385, 0)
+bones/1/rotation = Quaternion(-0.0177859, -6.75411e-08, 0.923668, -0.38278)
+bones/2/rotation = Quaternion(-0.270895, 0.13433, -0.33709, 0.891595)
+bones/3/rotation = Quaternion(-0.279558, 0.0124884, -0.0557698, 0.958426)
+bones/5/rotation = Quaternion(0.234755, 0.101914, 0.320623, 0.911978)
+bones/6/rotation = Quaternion(-0.448577, -0.0199747, 0.060874, 0.891445)
+bones/7/rotation = Quaternion(0.0739003, 0, 0, 0.997266)
+bones/8/rotation = Quaternion(0.0925519, 0, 0, 0.995708)
+
+[node name="Cube" parent="Armature/Skeleton3D" index="0"]
+surface_material_override/0 = SubResource("ShaderMaterial_nouv3")
+
+[node name="AnimationPlayer" parent="." index="1"]
+callback_mode_process = 2
+script = ExtResource("4_cckgi")
+Animation = "ArmatureAction"
+
+[node name="Node" type="Node" parent="AnimationPlayer" index="0"]
+script = ExtResource("2_tqfpw")

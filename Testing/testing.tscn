@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://b5o3y8mte01gx"]
+[gd_scene load_steps=18 format=3 uid="uid://b5o3y8mte01gx"]
 
 [ext_resource type="Shader" uid="uid://4fsqo5wb1srg" path="res://System/main.gdshader" id="1_qrja6"]
 [ext_resource type="Script" uid="uid://meoar1233lwh" path="res://Testing/MoveCamera.cs" id="2_kj3p2"]
@@ -6,11 +6,14 @@
 [ext_resource type="Script" uid="uid://h3s0gpfswn1d" path="res://System/FpsLimitAnimation.cs" id="3_coxpv"]
 [ext_resource type="PackedScene" uid="uid://cgajtcnnd3s37" path="res://System/illusion_effects.tscn" id="4_c3das"]
 [ext_resource type="Script" uid="uid://s10uh23lkyr1" path="res://System/IllusionSystem.cs" id="6_coxpv"]
+[ext_resource type="PackedScene" uid="uid://ctpfmekyuew80" path="res://Testing/silly.tscn" id="7_a23fp"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_40w3p"]
 render_priority = 0
 shader = ExtResource("1_qrja6")
 shader_parameter/mainColor = Color(0, 0.584314, 1, 1)
+shader_parameter/specular = false
+shader_parameter/shade = true
 
 [sub_resource type="Animation" id="Animation_lc7k4"]
 length = 0.001
@@ -44,11 +47,15 @@ _data = {
 render_priority = 0
 shader = ExtResource("1_qrja6")
 shader_parameter/mainColor = Color(0, 1, 1, 1)
+shader_parameter/specular = false
+shader_parameter/shade = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5j5vr"]
 render_priority = 0
 shader = ExtResource("1_qrja6")
 shader_parameter/mainColor = Color(1, 0, 0, 1)
+shader_parameter/specular = false
+shader_parameter/shade = true
 
 [sub_resource type="Animation" id="Animation_ybq6y"]
 length = 0.001
@@ -98,7 +105,6 @@ Animation = "idle"
 
 [node name="Node" type="Node" parent="CSGBox3D/AnimationPlayer"]
 script = ExtResource("3_coxpv")
-fps = 15
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866504, 0.51443, -0.170511)
@@ -125,10 +131,9 @@ Animation = "idle"
 
 [node name="Node" type="Node" parent="CSGSphere3D/AnimationPlayer"]
 script = ExtResource("3_coxpv")
-fps = 15
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.965926, -0.183013, 0.183013, 0, 0.707107, 0.707107, -0.258819, -0.683013, 0.683013, 4.08113, 0, 0)
+transform = Transform3D(0.858889, -7.45058e-09, -0.512163, 0.10617, 0.978278, 0.178045, 0.501038, -0.207297, 0.840232, 4.08113, 0, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_qrja6")
@@ -144,5 +149,9 @@ script = ExtResource("2_kj3p2")
 [node name="IllusionSystem" type="Node3D" parent="." node_paths=PackedStringArray("mainCamera")]
 script = ExtResource("6_coxpv")
 mainCamera = NodePath("../Camera3D")
+outlineSize = 12.0
 
 [node name="IllusionEffects" parent="." instance=ExtResource("4_c3das")]
+
+[node name="silly" parent="." instance=ExtResource("7_a23fp")]
+transform = Transform3D(0.20562, 0, -0.343104, 0, 0.4, 0, 0.343104, 0, 0.20562, 9.16491, 0, -2.30262)

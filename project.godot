@@ -21,4 +21,12 @@ window/stretch/mode="viewport"
 
 [dotnet]
 
-project/assembly_name="2d3dTest"
+project/assembly_name="2DIllusionIn3D"
+
+[filesystem]
+
+import/blender/enabled=false
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0

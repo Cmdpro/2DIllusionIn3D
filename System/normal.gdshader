@@ -4,7 +4,7 @@ render_mode unshaded, depth_draw_never, depth_test_disabled;
 
 uniform sampler2D screen_texture : filter_nearest;
 uniform sampler2D normal_texture : hint_normal_roughness_texture, filter_nearest;
-uniform float edge_threshold = 0.2;
+const float edge_threshold = 0.315;
 
 void vertex() {
 	// Called for every vertex the material is visible on.
