@@ -1,0 +1,144 @@
+[gd_scene load_steps=18 format=3 uid="uid://cgajtcnnd3s37"]
+
+[ext_resource type="Script" uid="uid://b7vt414d8cu7v" path="res://System/Internal/ResizeWithCamera.cs" id="3_4lhu0"]
+[ext_resource type="Script" uid="uid://ct8dj1lqfv67u" path="res://System/Internal/MimicCurrentCamera.cs" id="5_1rmpf"]
+[ext_resource type="Shader" uid="uid://by2woxf8rj4so" path="res://System/normal.gdshader" id="6_8gf4f"]
+[ext_resource type="Script" uid="uid://bbc7e84yvwm8i" path="res://System/Internal/PostProcessRect.cs" id="6_d0qcg"]
+[ext_resource type="Shader" uid="uid://da1hmgxwiaf32" path="res://System/depth.gdshader" id="7_aw7ub"]
+[ext_resource type="Shader" uid="uid://beccba5h1btvh" path="res://System/post.gdshader" id="8_t4mo0"]
+
+[sub_resource type="Environment" id="Environment_coxpv"]
+background_energy_multiplier = 0.0
+ambient_light_source = 1
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_40w3p"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_40w3p"]
+viewport_path = NodePath("CanvasLayer/SubViewportContainer/SubViewportUnshaded")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_i85nf"]
+resource_local_to_scene = true
+render_priority = -1
+shader = ExtResource("6_8gf4f")
+shader_parameter/screen_texture = SubResource("ViewportTexture_40w3p")
+shader_parameter/edge_threshold = 0.2
+
+[sub_resource type="Environment" id="Environment_a23fp"]
+background_energy_multiplier = 0.0
+ambient_light_source = 1
+ambient_light_energy = 0.0
+reflected_light_source = 1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_t8n54"]
+resource_local_to_scene = true
+render_priority = -1
+shader = ExtResource("7_aw7ub")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_i85nf"]
+viewport_path = NodePath("CanvasLayer/SubViewportContainer/SubViewportDepth")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_t8n54"]
+viewport_path = NodePath("CanvasLayer/SubViewportContainer/SubViewportNormal")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_coxpv"]
+viewport_path = NodePath("CanvasLayer/SubViewportContainer/SubViewportShaded")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_a23fp"]
+viewport_path = NodePath("CanvasLayer/SubViewportContainer/SubViewportUnshaded")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jn4p2"]
+resource_local_to_scene = true
+shader = ExtResource("8_t4mo0")
+shader_parameter/shaded_texture = SubResource("ViewportTexture_coxpv")
+shader_parameter/unshaded_texture = SubResource("ViewportTexture_a23fp")
+shader_parameter/normal_texture = SubResource("ViewportTexture_t8n54")
+shader_parameter/depth_texture = SubResource("ViewportTexture_i85nf")
+shader_parameter/camera_size = 0.0
+shader_parameter/outline_size = 0.0
+
+[node name="IllusionEffects" type="Node3D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewportShaded" type="SubViewport" parent="CanvasLayer/SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="CanvasLayer/SubViewportContainer/SubViewportShaded"]
+cull_mask = 1048551
+projection = 1
+size = 10.0
+script = ExtResource("5_1rmpf")
+
+[node name="SubViewportUnshaded" type="SubViewport" parent="CanvasLayer/SubViewportContainer"]
+handle_input_locally = false
+debug_draw = 1
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="CanvasLayer/SubViewportContainer/SubViewportUnshaded"]
+cull_mask = 1048551
+environment = SubResource("Environment_coxpv")
+projection = 1
+size = 10.0
+script = ExtResource("5_1rmpf")
+
+[node name="SubViewportNormal" type="SubViewport" parent="CanvasLayer/SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="CanvasLayer/SubViewportContainer/SubViewportNormal"]
+cull_mask = 1048559
+environment = SubResource("Environment_coxpv")
+projection = 1
+size = 10.0
+script = ExtResource("5_1rmpf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CanvasLayer/SubViewportContainer/SubViewportNormal/Camera3D" node_paths=PackedStringArray("camera")]
+transform = Transform3D(10, 0, 0, 0, -4.37114e-07, -10, 0, 10, -4.37114e-07, 0, 0, -0.23)
+layers = 8
+mesh = SubResource("PlaneMesh_40w3p")
+surface_material_override/0 = SubResource("ShaderMaterial_i85nf")
+script = ExtResource("3_4lhu0")
+camera = NodePath("..")
+
+[node name="SubViewportDepth" type="SubViewport" parent="CanvasLayer/SubViewportContainer"]
+handle_input_locally = false
+use_hdr_2d = true
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="CanvasLayer/SubViewportContainer/SubViewportDepth"]
+cull_mask = 1048567
+environment = SubResource("Environment_a23fp")
+projection = 1
+size = 10.0
+script = ExtResource("5_1rmpf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CanvasLayer/SubViewportContainer/SubViewportDepth/Camera3D" node_paths=PackedStringArray("camera")]
+transform = Transform3D(10, 0, 0, 0, -4.37114e-07, -10, 0, 10, -4.37114e-07, 0, 0, -0.23)
+layers = 16
+mesh = SubResource("PlaneMesh_40w3p")
+surface_material_override/0 = SubResource("ShaderMaterial_t8n54")
+script = ExtResource("3_4lhu0")
+camera = NodePath("..")
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_jn4p2")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("6_d0qcg")

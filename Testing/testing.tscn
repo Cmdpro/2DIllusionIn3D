@@ -1,0 +1,148 @@
+[gd_scene load_steps=17 format=3 uid="uid://b5o3y8mte01gx"]
+
+[ext_resource type="Shader" uid="uid://4fsqo5wb1srg" path="res://System/main.gdshader" id="1_qrja6"]
+[ext_resource type="Script" uid="uid://meoar1233lwh" path="res://Testing/MoveCamera.cs" id="2_kj3p2"]
+[ext_resource type="Script" uid="uid://8o7h06tgrftp" path="res://Testing/AutoPlay.cs" id="2_lc7k4"]
+[ext_resource type="Script" uid="uid://h3s0gpfswn1d" path="res://System/FpsLimitAnimation.cs" id="3_coxpv"]
+[ext_resource type="PackedScene" uid="uid://cgajtcnnd3s37" path="res://System/illusion_effects.tscn" id="4_c3das"]
+[ext_resource type="Script" uid="uid://s10uh23lkyr1" path="res://System/IllusionSystem.cs" id="6_coxpv"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_40w3p"]
+render_priority = 0
+shader = ExtResource("1_qrja6")
+shader_parameter/mainColor = Color(0, 0.584314, 1, 1)
+
+[sub_resource type="Animation" id="Animation_lc7k4"]
+length = 0.001
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(-0.166667, 1, 0, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_kj3p2"]
+resource_name = "idle"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 2, 1, 0, 0, 0, -1)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jn4p2"]
+_data = {
+&"RESET": SubResource("Animation_lc7k4"),
+&"idle": SubResource("Animation_kj3p2")
+}
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dqee8"]
+render_priority = 0
+shader = ExtResource("1_qrja6")
+shader_parameter/mainColor = Color(0, 1, 1, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5j5vr"]
+render_priority = 0
+shader = ExtResource("1_qrja6")
+shader_parameter/mainColor = Color(1, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_ybq6y"]
+length = 0.001
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0.742053, 0.469808, 0.0809884)
+
+[sub_resource type="Animation" id="Animation_jn4p2"]
+resource_name = "idle"
+loop_mode = 1
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0.742053, 0.469808, 0.0809884, 0.166667, 1, 0.742, 0.57, 0.081, 0.366667, 1, 0.842, 0.37, 0.081, 0.6, 1, 0.642, 0.37, 0.081, 0.77, 1, 0.742053, 0.469808, 0.0809884, 1, 1, 0.742053, 0.469808, 0.0809884)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_11ixh"]
+_data = {
+&"RESET": SubResource("Animation_ybq6y"),
+&"idle": SubResource("Animation_jn4p2")
+}
+
+[sub_resource type="Environment" id="Environment_qrja6"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="CSGBox3D" type="CSGSphere3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.681147, 2.12017, 0)
+radial_segments = 5
+rings = 2
+smooth_faces = false
+material = SubResource("ShaderMaterial_40w3p")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CSGBox3D"]
+callback_mode_process = 2
+libraries = {
+&"": SubResource("AnimationLibrary_jn4p2")
+}
+script = ExtResource("2_lc7k4")
+Animation = "idle"
+
+[node name="Node" type="Node" parent="CSGBox3D/AnimationPlayer"]
+script = ExtResource("3_coxpv")
+fps = 15
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866504, 0.51443, -0.170511)
+size = Vector3(1.2, 1, 0.792)
+material = SubResource("ShaderMaterial_dqee8")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.787524, 0.470973, -0.52843)
+size = Vector3(1.96484, 1.64697, 1)
+material = SubResource("ShaderMaterial_40w3p")
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.742053, 0.469808, 0.0809884)
+radius = 0.329654
+material = SubResource("ShaderMaterial_5j5vr")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CSGSphere3D"]
+callback_mode_process = 2
+libraries = {
+&"": SubResource("AnimationLibrary_11ixh")
+}
+script = ExtResource("2_lc7k4")
+Animation = "idle"
+
+[node name="Node" type="Node" parent="CSGSphere3D/AnimationPlayer"]
+script = ExtResource("3_coxpv")
+fps = 15
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.965926, -0.183013, 0.183013, 0, 0.707107, 0.707107, -0.258819, -0.683013, 0.683013, 4.08113, 0, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_qrja6")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.685, 2, 8)
+cull_mask = 1048551
+projection = 1
+current = true
+size = 10.0
+script = ExtResource("2_kj3p2")
+
+[node name="IllusionSystem" type="Node3D" parent="." node_paths=PackedStringArray("mainCamera")]
+script = ExtResource("6_coxpv")
+mainCamera = NodePath("../Camera3D")
+
+[node name="IllusionEffects" parent="." instance=ExtResource("4_c3das")]
