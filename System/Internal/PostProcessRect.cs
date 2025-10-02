@@ -16,6 +16,8 @@ namespace IllusionSystem.Internal
                 {
                     material.SetShaderParameter("camera_size", system.mainCamera.Size);
                     material.SetShaderParameter("outline_size", system.outlineSize);
+                    material.SetShaderParameter("wobble", system.outlineWobble);
+                    material.SetShaderParameter("line_size_variance", system.outlineSizeVariance);
                 }
             }
         }

@@ -7,6 +7,8 @@ uniform sampler2D depth_texture : filter_nearest;
 
 uniform float camera_size;
 uniform float outline_size;
+uniform float wobble = 0.5;
+uniform float line_size_variance = 3.0;
 
 vec4 edge(vec2 uv, vec2 pixelSize, sampler2D normal) {
 	vec2 offsets[5] = {
@@ -39,8 +41,13 @@ vec4 edge(vec2 uv, vec2 pixelSize, sampler2D normal) {
 
 
 void fragment() {
-	vec2 pixelSize = SCREEN_PIXEL_SIZE*(outline_size/camera_size);
 	vec2 uv = UV;
+	float stageMod = mod(TIME, 3.0/10.0);
+	float stage = stageMod < 1.0/10.0 ? 0.0 : stageMod < 2.0/10.0 ? 1.0 : 2.0;
+	float rotShift = ((2.0-stage)+((uv.x*15.0)+(uv.y*20.0)))*90.0;
+	float outlineAdd = stage*line_size_variance;
+	vec2 pixelSize = SCREEN_PIXEL_SIZE*((outline_size+outlineAdd)/camera_size);
+	uv += SCREEN_PIXEL_SIZE*vec2(sin(radians(rotShift)), cos(radians(rotShift)))*wobble;
 	COLOR = texture(shaded_texture, uv);
 	vec4 edgeColor = edge(uv, pixelSize, normal_texture);
 	float nOutline = texture(normal_texture, uv).r;

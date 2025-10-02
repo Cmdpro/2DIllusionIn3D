@@ -54,6 +54,8 @@ shader_parameter/normal_texture = SubResource("ViewportTexture_t8n54")
 shader_parameter/depth_texture = SubResource("ViewportTexture_i85nf")
 shader_parameter/camera_size = 0.0
 shader_parameter/outline_size = 0.0
+shader_parameter/wobble = 0.5
+shader_parameter/line_size_variance = 3.0
 
 [node name="IllusionEffects" type="Node3D"]
 

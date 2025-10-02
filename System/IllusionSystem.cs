@@ -12,6 +12,10 @@ namespace IllusionSystem
         public Camera3D mainCamera;
         [Export]
         public float outlineSize = 16f;
+        [Export]
+        public float outlineWobble = 0.5f;
+        [Export]
+        public float outlineSizeVariance = 3f;
 
         public override void _Process(double delta)
         {
